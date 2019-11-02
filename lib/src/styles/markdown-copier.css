@@ -1,0 +1,46 @@
+.markdown-copier-wrapper{
+  position:relative;
+  mix-blend-mode:difference;
+  display: none;
+}
+
+
+.markdown-copier-svg {
+  position:absolute;
+  right:0px;
+  width:24px;
+  height:24px;
+}
+
+@-webkit-keyframes fadeIn {
+  from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.markdown-copier:hover {
+  cursor: pointer;
+}
+
+.markdown-copier-path-1 {
+  fill: black;
+}
+
+.markdown-copier-path-2 {
+  fill: white;
+  mix-blend-mode:difference;
+}
+
+.markdown-copier-wrapper{
+  position:relative;
+  mix-blend-mode:difference;
+}
+
+pre:hover>.markdown-copier-wrapper {
+  display:block;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn .6s;
+}

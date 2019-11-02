@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { MarkdownService } from 'ngx-markdown';
 import { of } from 'rxjs';
 import { delay, first, tap } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 
 // tslint:disable:max-line-length
@@ -90,6 +91,7 @@ $f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi) e^{2 \\pi i \\xi x} d\\xi$
 
   constructor(
     private markdownService: MarkdownService,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -104,6 +106,10 @@ $f(x) = \\int_{-\\infty}^\\infty \\hat f(\\xi) e^{2 \\pi i \\xi x} d\\xi$
       queue: false,
       easing: 'easeOutCubic',
     });
+  }
+
+  onCopyClick(element: any) {
+    this.toastr.success('Copied to clipboard!');
   }
 
   private animateScrollTop() {

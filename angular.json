@@ -50,7 +50,8 @@
               "node_modules/prismjs/components/prism-typescript.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/katex/dist/katex.min.js",
-              "node_modules/materialize-css/dist/js/materialize.min.js"
+              "node_modules/materialize-css/dist/js/materialize.min.js",
+              "node_modules/clipboard/dist/clipboard.min.js"
             ]
           },
           "configurations": {

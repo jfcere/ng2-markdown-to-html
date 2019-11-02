@@ -21,14 +21,16 @@
     "marked.js",
     "prism",
     "prism.js",
-    "katex"
+    "katex",
+    "clipboard",
+    "clipboard.js"
   ],
   "scripts": {
     "ng": "ng",
     "start": "yarn link:lib && ng serve",
     "build:demo": "ng build demo",
     "build:lib": "ng build lib",
-    "postbuild:lib": "cpx ./README.md ./dist/lib && cpx ./LICENSE ./dist/lib",
+    "postbuild:lib": "cpx ./lib/src/styles/** ./dist/lib/src/styles && cpx ./README.md ./dist/lib && cpx ./LICENSE ./dist/lib",
     "link:lib": "rimraf node_modules/ngx-markdown && linklocal",
     "lint": "yarn lint:lib && yarn lint:demo",
     "lint:demo": "ng lint demo",
@@ -51,6 +53,7 @@
     "@angular/router": "^8.0.0",
     "materialize-css": "~0.100.2",
     "ngx-markdown": "file:./lib",
+    "ngx-toastr": "^11.2.0",
     "rxjs": "^6.5.2",
     "zone.js": "^0.9.1"
   },

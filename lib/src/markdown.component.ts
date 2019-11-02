@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-
+import { MarkedOptions } from 'ngx-markdown';
+import { ClipboardRenderer } from './clipboard-renderer';
 import { KatexOptions } from './katex-options';
 import { MarkdownService } from './markdown.service';
 import { PrismPlugin } from './prism-plugin';
+
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -35,6 +37,8 @@ export class MarkdownComponent implements OnChanges, AfterViewInit {
   @Output() error = new EventEmitter<string>();
   @Output() load = new EventEmitter<string>();
 
+  @Output() buttonClick = new EventEmitter<Element>();
+
   private _katex = false;
   private _lineHighlight = false;
   private _lineNumbers = false;
@@ -62,11 +66,23 @@ export class MarkdownComponent implements OnChanges, AfterViewInit {
   }
 
   render(markdown: string, decodeHtml = false) {
+    this.markdownService.options = this.getMarkedOptions(this.buttonClick);
     let compiled = this.markdownService.compile(markdown, decodeHtml);
     compiled = this.katex ? this.markdownService.renderKatex(compiled, this.katexOptions) : compiled;
     this.element.nativeElement.innerHTML = compiled;
     this.handlePlugins();
     this.markdownService.highlight(this.element.nativeElement);
+    this.markdownService.handleClipboard(this.element.nativeElement, this.buttonClick);
+  }
+
+  private getMarkedOptions(emitter: EventEmitter<Element>): MarkedOptions {
+    if (this.markdownService.isClipboardCopyEnabled(emitter)) {
+      const markedOptions = new MarkedOptions();
+      markedOptions.renderer = new ClipboardRenderer();
+      return markedOptions;
+    } else {
+      return this.markdownService.options;
+    }
   }
 
   private coerceBooleanProperty(value: boolean): boolean {

@@ -1,14 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, Optional, PLATFORM_ID, SecurityContext } from '@angular/core';
+import { EventEmitter, Inject, Injectable, Optional, PLATFORM_ID, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as marked from 'marked';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { KatexOptions } from './katex-options';
 import { MarkedOptions } from './marked-options';
 import { MarkedRenderer } from './marked-renderer';
+
+
+declare var ClipboardJS;
 
 declare var katex: {
   renderToString(tex: string, options?: KatexOptions): string;
@@ -84,6 +86,47 @@ export class MarkdownService {
       throw new Error(errorKatexNotLoaded);
     }
     return html.replace(/\$([^\s][^$]*?[^\s])\$/gm, (_, tex) => katex.renderToString(tex, options));
+  }
+
+  handleClipboard(element: HTMLElement, emitter: EventEmitter<Element>) {
+    if (this.isClipboardCopyEnabled(emitter)) {
+      const buttons = element.querySelectorAll('.markdown-copier');
+      buttons.forEach(button => {
+        const copyText = button.parentElement.parentElement.innerText;
+        button.setAttribute('data-clipboard-text', copyText);
+        this.setClickListener(button, emitter);
+      });
+      this.initClipboardJS();
+    }
+  }
+
+  isClipboardCopyEnabled(emitter: EventEmitter<Element>): boolean {
+    if (typeof ClipboardJS !== 'undefined' && ClipboardJS.isSupported() && this.isObserverPresent(emitter)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private isObserverPresent(emitter: EventEmitter<Element>): boolean {
+    return emitter.observers.length > 0;
+  }
+
+  private initClipboardJS() {
+          // tslint:disable-next-line: no-unused-expression
+          new ClipboardJS('.markdown-copier');
+  }
+
+  private setClickListener(element: Element, emitter: EventEmitter<Element>) {
+    if (emitter) {
+      element.addEventListener('click', () => {
+        if (emitter.observers.length > 0) {
+          emitter.emit(element);
+        } else {
+          console.warn('Copied to clipboard! Set buttonClick event handler for a custom feedback!');
+        }
+      });
+    }
   }
 
   private decodeHtml(html: string): string {

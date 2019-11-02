@@ -35,6 +35,7 @@
         <li><a href="#line-numbers">Line Numbers</a></li>
         <li><a href="#line-highlight">Line Highlight</a></li>
         <li><a href="#katex">KaTeX</a></li>
+        <li><a href="#clipboardjs">ClipboardJS</a></li>
       </ul>
     </div>
   </div>
@@ -363,6 +364,38 @@
       </markdown>
 
       <markdown [src]="'app/remote/katex-options.html'"></markdown>
+    </section>
+
+    <!-- PLUGIN - ClipboardJS -->
+    <section id="clipboardjs">
+      <h2 class="subtitle">ClipboardJS plugin</h2>
+
+	    <markdown ngPreserveWhitespaces>
+        #### ClipboardJS file to include
+        ```javascript
+        node_modules/clipboard/dist/clipboard.min.js
+        ```
+		    #### Styles to import
+        ```css
+        @import "ngx-markdown/src/styles/markdown-copier.css";
+        ```
+        #### Events
+        `buttonClick: EventEmitter&lt;Element&gt;` - Event emitter that is fired when a code snippet is copied to clipboard. Subscribing to it enables copy to clipboard buttons for code snippets. Buttons appear on hover.
+        ### Example
+      </markdown>
+
+      <markdown (buttonClick)="onCopyClick()" ngPreserveWhitespaces>
+
+        **example.component.ts**
+        ```typescript
+        onCopyClick(element: any) = &#123;
+          this.toastr.success('Copied to clipboard!');
+        };
+        ```
+
+        **example.component.html**
+      </markdown>
+      <markdown (buttonClick)="onCopyClick()" [src]="'app/remote/clipboardjs.html'"></markdown>
     </section>
   </div>
 </div>
