@@ -39,12 +39,18 @@ export class MarkdownService {
 
   private _options: MarkedOptions | undefined;
 
-  get options(): MarkedOptions { return this._options!; }
-  set options(value: MarkedOptions) {
-    this._options = { ...this.initialMarkedOptions, ...value };
+  get options(): MarkedOptions {
+    return this._options!;
   }
 
-  get renderer(): MarkedRenderer { return this.options.renderer!; }
+  set options(value: MarkedOptions) {
+    this._options = {...this.initialMarkedOptions, ...value};
+  }
+
+  get renderer(): MarkedRenderer {
+    return this.options.renderer!;
+  }
+
   set renderer(value: MarkedRenderer) {
     this.options.renderer = value;
   }
@@ -59,7 +65,7 @@ export class MarkdownService {
     this.options = options;
   }
 
-  compile(markdown: string, decodeHtml = false, emojify = false,  markedOptions = this.options): string {
+  compile(markdown: string, decodeHtml = false, emojify = false, markedOptions = this.options): string {
     const trimmed = this.trimIndentation(markdown);
     const decoded = decodeHtml ? this.decodeHtml(trimmed) : trimmed;
     const emojified = emojify ? this.renderEmoji(decoded) : decoded;
@@ -72,7 +78,7 @@ export class MarkdownService {
       throw new Error(errorSrcWithoutHttpClient);
     }
     return this.http
-      .get(src, { responseType: 'text' })
+      .get(src, {responseType: 'text'})
       .pipe(map(markdown => this.handleExtension(src, markdown)));
   }
 
@@ -110,6 +116,12 @@ export class MarkdownService {
   }
 
   private handleExtension(src: string, markdown: string): string {
+    if (
+      (this.options.ignoreFileExtensionCheckFn && this.options.ignoreFileExtensionCheckFn(src)) ||
+      this.options.ignoreFileExtensionCheck) {
+      return markdown;
+    }
+
     const extension = src
       ? src.split('?')[0].split('.').splice(-1).join()
       : null;

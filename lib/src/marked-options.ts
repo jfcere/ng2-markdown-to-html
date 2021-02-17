@@ -69,6 +69,16 @@ export class MarkedOptions {
   xhtml?: boolean;
 
   /**
+   * Ignore url suffix check when web request to load markdown file, ignore file extension check
+   */
+  ignoreFileExtensionCheck?: boolean;
+
+  /**
+   * ignore file extension check function
+   */
+  ignoreFileExtensionCheckFn?(url: string): boolean;
+
+  /**
    * A function to highlight code blocks. The function takes three arguments: code, lang, and callback.
    */
   highlight?(code: string, lang: string, callback?: (error: any | undefined, code: string) => void): string;
