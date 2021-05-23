@@ -12,6 +12,8 @@ import { AnchorService } from '@shared/anchor/anchor.service';
 import { SharedModule } from '@shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MarkdownRerenderComponent } from './markdown-rerender/markdown-rerender.component';
+import { FormsModule } from '@angular/forms';
 
 export function markedOptionsFactory(anchorService: AnchorService): MarkedOptions {
   const renderer = new MarkedRenderer();
@@ -44,8 +46,9 @@ export function markedOptionsFactory(anchorService: AnchorService): MarkedOption
     MatTabsModule,
     MatToolbarModule,
     SharedModule,
+    FormsModule,
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, MarkdownRerenderComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

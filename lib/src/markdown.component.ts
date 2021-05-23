@@ -59,6 +59,10 @@ export class MarkdownComponent implements OnChanges, AfterViewInit {
   ) { }
 
   ngOnChanges(): void {
+    this.loadContent();
+  }
+
+  loadContent(): void {
     if (this.data != null) {
       this.handleData();
       return;
@@ -73,6 +77,10 @@ export class MarkdownComponent implements OnChanges, AfterViewInit {
     if (!this.data && !this.src) {
       this.handleTransclusion();
     }
+
+    this.markdownService._trigger$.subscribe(() => {
+      this.loadContent();
+    });
   }
 
   render(markdown: string, decodeHtml = false): void {

@@ -108,6 +108,18 @@ describe('MarkdowService', () => {
       });
     });
 
+    describe('re-render markdown', () => {
+
+      it('should request reload fn', () => {
+
+        markdownService._trigger$.subscribe(res => {
+          expect(res).toBe(1);
+        });
+
+        markdownService.reload();
+      });
+    });
+
     describe('compile', () => {
 
       it('should return parsed markdown correctly', () => {

@@ -169,6 +169,15 @@ describe('MarkdownComponent', () => {
 
       expect(component.render).not.toHaveBeenCalled();
     });
+
+    it('should rerender content on demand', () => {
+
+      spyOn(component, 'loadContent');
+
+      markdownService.reload();
+
+      expect(component.loadContent).toHaveBeenCalled();
+    });
   });
 
   describe('render', () => {

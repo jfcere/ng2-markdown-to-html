@@ -486,6 +486,14 @@ This code will output the following HTML:
 
 > :blue_book: Follow official [marked.renderer](https://marked.js.org/#/USING_PRO.md#renderer) documentation for the list of tokens that can be overriden.
 
+## Re-render Markdown
+
+You might need to re-render Markdown after making a change. If you've updated the text, this would be done automatically however if the change is internal to Markdown such as it's settings, you will need to inform Markdown to update.
+
+`this.markdownService.reload()`
+
+Click [here](/rerender) to view demo.
+
 ## Syntax highlight
 
 When using static markdown you are responsible to provide the code block with related language.

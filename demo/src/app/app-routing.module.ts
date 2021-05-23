@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MarkdownRerenderComponent } from './markdown-rerender/markdown-rerender.component';
 
 const routes: Routes = [
   {
     path: 'get-started',
     loadChildren: () => import('./get-started/get-started.module').then(m => m.GetStartedModule),
     data: { label: 'Get Started' },
+  },
+  {
+    path: 'rerender',
+    component: MarkdownRerenderComponent
   },
   {
     path: 'cheat-sheet',

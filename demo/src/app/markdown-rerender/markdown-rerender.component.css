@@ -1,0 +1,24 @@
+.input-container {
+  margin-bottom: 10px;
+}
+
+.input-container > b {
+  margin-right: 10px;
+}
+
+textarea {
+  width: 30vw;
+  height: 60vh;
+}
+
+.markdown-container {
+  display: flex;
+}
+
+.variable-binding {
+  margin-left: 10px;
+}
+
+::ng-deep .variable-binding h2 {
+  margin-top: 0 !important;
+}

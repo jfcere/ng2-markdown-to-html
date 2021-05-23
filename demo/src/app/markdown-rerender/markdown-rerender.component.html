@@ -1,0 +1,8 @@
+<div class="input-container">
+  <b>CSS Color:</b>
+  <input [(ngModel)]="accentColor" placeholder="Ex: red, blue, #00a, etc." />
+</div>
+<div class="markdown-container">
+  <textarea class="variable-textarea" [(ngModel)]="markdown"></textarea>
+  <markdown class="variable-binding" [data]="markdown"></markdown>
+</div>

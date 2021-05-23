@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional, PLATFORM_ID, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as marked from 'marked';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { KatexOptions } from './katex-options';
@@ -32,6 +32,8 @@ export const SECURITY_CONTEXT = new InjectionToken<SecurityContext>('SECURITY_CO
 
 @Injectable()
 export class MarkdownService {
+
+  _trigger$ = new Subject();
 
   private readonly initialMarkedOptions: MarkedOptions = {
     renderer: new MarkedRenderer(),
@@ -65,6 +67,10 @@ export class MarkdownService {
     const emojified = emojify ? this.renderEmoji(decoded) : decoded;
     const compiled = marked.parse(emojified, markedOptions);
     return this.sanitizer.sanitize(this.securityContext, compiled) || '';
+  }
+
+  reload(): void {
+    this._trigger$.next(1);
   }
 
   getSource(src: string): Observable<string> {
