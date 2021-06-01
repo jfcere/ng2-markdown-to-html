@@ -1,11 +1,13 @@
 import { ElementRef, NgZone } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { MarkdownModule } from './markdown.module';
 import { MarkdownPipe } from './markdown.pipe';
 import { MarkdownService } from './markdown.service';
 
 describe('MarkdownPipe', () => {
+  let domSanitizer: DomSanitizer;
   const elementRef = new ElementRef(document.createElement('div'));
   let markdownService: MarkdownService;
   let pipe: MarkdownPipe;
@@ -20,9 +22,10 @@ describe('MarkdownPipe', () => {
   });
 
   beforeEach(() => {
+    domSanitizer = TestBed.inject(DomSanitizer);
     markdownService = TestBed.inject(MarkdownService);
     zone = TestBed.inject(NgZone);
-    pipe = new MarkdownPipe(elementRef, markdownService, zone);
+    pipe = new MarkdownPipe(domSanitizer, elementRef, markdownService, zone);
   });
 
   it('should return empty string when value is null/undefined', () => {
@@ -68,12 +71,15 @@ describe('MarkdownPipe', () => {
 
     const markdown = '# Markdown';
     const mockCompiled = 'compiled-x';
+    const mockBypassSecurity = 'bypass-x';
 
     spyOn(markdownService, 'compile').and.returnValue(mockCompiled);
+    spyOn(domSanitizer, 'bypassSecurityTrustHtml').and.returnValue(mockBypassSecurity);
 
     const result = pipe.transform(markdown);
 
     expect(markdownService.compile).toHaveBeenCalledWith(markdown);
-    expect(result).toBe(mockCompiled);
+    expect(domSanitizer.bypassSecurityTrustHtml).toHaveBeenCalledWith(mockCompiled);
+    expect(result).toBe(mockBypassSecurity);
   });
 });

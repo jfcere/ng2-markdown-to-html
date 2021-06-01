@@ -72,6 +72,7 @@
             }
           ]
         }],
+        "semi": ["error", "always"],
         "sort-imports": ["error", {
           "ignoreCase": true,
           "ignoreDeclarationSort": true
